@@ -1,0 +1,23 @@
+### **Problem Context: Developing a Phonebook Application in Java**  
+
+You have been hired to develop a simple **Phonebook** system using **Java**. The goal is to allow users to store, search, update, and delete contacts efficiently.  
+
+The phonebook should include the following main features:  
+1. **Add a contact** with name, phone number, and email.  
+2. **List all contacts** stored in the system.  
+3. **Search for a contact** by name or phone number.  
+4. **Edit an existing contact**.  
+5. **Remove a contact** from the phonebook.  
+6. **Save and load contacts** from a file for data persistence.  
+
+### **System Requirements**  
+- The application must be developed in **Java**.  
+- The interface can be **console-based** or use **JavaFX** for a graphical UI.  
+- The data structure should be chosen to optimize searches and contact management (e.g., **ArrayList, HashMap, or TreeSet**).  
+- The data must be **persistently stored** (e.g., in a text file or database).  
+- The code should be modular, applying **OOP (Object-Oriented Programming)** principles such as classes and encapsulation.  
+
+### **Scenario**  
+Imagine that this phonebook will be used by a small office that needs to organize its client and supplier contacts. The team wants a simple yet efficient tool to quickly add and access contact information.  
+
+Now, based on this context, your challenge is to **design and implement** the solution in **Java**, ensuring that all functionalities are developed efficiently while following good programming practices. 🚀
