@@ -41,5 +41,11 @@ public class Program {
         String name = sc.nextLine();
         personFound = personDao.findByName(name);
         System.out.println(personFound);
+
+        System.out.println("\n=== Test 5: Person deleteById ===");
+        System.out.print("Enter id to delete a contact: ");
+        id = sc.nextInt();
+        personDao.deleteById(id);
+        System.out.println("Delete completed");
     }
 }

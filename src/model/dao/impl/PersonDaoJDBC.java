@@ -82,7 +82,26 @@ public class PersonDaoJDBC implements PersonDao {
 
     @Override
     public void deleteById(Integer id) {
+        PreparedStatement preparedStatement = null;
 
+        try {
+            preparedStatement = connection.prepareStatement(
+                                """
+                                    DELETE FROM person
+                                    WHERE id = ?
+                                    """);
+            preparedStatement.setInt(1, id);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new DbException("Can't find a contact by id: " + id);
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     @Override
@@ -129,7 +148,7 @@ public class PersonDaoJDBC implements PersonDao {
             resultSet = preparedStatement.executeQuery();
 
             if (!resultSet.next()) {
-                throw new DbException("Can't find a person by name: " + name);
+                throw new DbException("Can't find a contact by name: " + name);
             }
 
             return instantiatePerson(resultSet);
@@ -154,9 +173,6 @@ public class PersonDaoJDBC implements PersonDao {
 
             resultSet = preparedStatement.executeQuery();
 
-            if (!resultSet.next()) {
-                throw new DbException("There's no contact in data base");
-            }
             return instantiateContacts(resultSet);
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
