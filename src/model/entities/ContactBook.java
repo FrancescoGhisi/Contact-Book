@@ -18,6 +18,10 @@ public class ContactBook implements Serializable {
         this.contacts = contacts;
     }
 
+    public List<Person> getContacts() {
+        return this.contacts;
+    }
+
     public void addContact(Person person) {
         contacts.add(person);
     }

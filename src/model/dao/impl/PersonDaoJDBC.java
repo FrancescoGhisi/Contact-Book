@@ -6,6 +6,7 @@ import model.dao.PersonDao;
 import model.entities.Person;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonDaoJDBC implements PersonDao {
@@ -73,6 +74,36 @@ public class PersonDaoJDBC implements PersonDao {
 
     @Override
     public List<Person> findAll() {
-        return List.of();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                                """
+                                    SELECT * FROM person
+                                    """);
+
+            resultSet = preparedStatement.executeQuery();
+
+            return instantiateContacts(resultSet);
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
+    }
+
+    private List<Person> instantiateContacts(ResultSet resultSet) throws SQLException {
+        List<Person> contacts = new ArrayList<>();
+        while (resultSet.next()) {
+            Person person = new Person();
+            person.setId(resultSet.getInt("Id"));
+            person.setName(resultSet.getString("Name"));
+            person.setPhoneNumber(resultSet.getString("PhoneNumber"));
+            person.setEmail(resultSet.getString("Email"));
+            contacts.add(person);
+        }
+        return contacts;
     }
 }
