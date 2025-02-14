@@ -5,7 +5,7 @@ You have been hired to develop a simple **Phonebook** system using **Java**. The
 The phonebook should include the following main features:  
 1. **Add a contact** with name, phone number, and email.  
 2. **List all contacts** stored in the system.  
-3. **Search for a contact** by name or phone number.  
+3. **Search for a contact** by name or id.
 4. **Edit an existing contact**.  
 5. **Remove a contact** from the phonebook.  
 6. **Save and load contacts** from a file for data persistence.  

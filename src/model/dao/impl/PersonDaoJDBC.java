@@ -64,7 +64,29 @@ public class PersonDaoJDBC implements PersonDao {
 
     @Override
     public Person findById(Integer id) {
-        return null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(
+                                """
+                                    SELECT * FROM person
+                                    WHERE id = ?
+                                    """);
+            preparedStatement.setInt(1, id);
+
+            resultSet = preparedStatement.executeQuery();
+
+            Person person = new Person();
+            if (resultSet.next()) {
+                person = instantiatePerson(resultSet);
+            }
+            return person;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
     }
 
     @Override
@@ -97,13 +119,17 @@ public class PersonDaoJDBC implements PersonDao {
     private List<Person> instantiateContacts(ResultSet resultSet) throws SQLException {
         List<Person> contacts = new ArrayList<>();
         while (resultSet.next()) {
-            Person person = new Person();
-            person.setId(resultSet.getInt("Id"));
-            person.setName(resultSet.getString("Name"));
-            person.setPhoneNumber(resultSet.getString("PhoneNumber"));
-            person.setEmail(resultSet.getString("Email"));
-            contacts.add(person);
+            contacts.add(instantiatePerson(resultSet));
         }
         return contacts;
+    }
+
+    private Person instantiatePerson(ResultSet resultSet) throws SQLException {
+        Person person = new Person();
+        person.setId(resultSet.getInt("Id"));
+        person.setName(resultSet.getString("Name"));
+        person.setPhoneNumber(resultSet.getString("PhoneNumber"));
+        person.setEmail(resultSet.getString("Email"));
+        return person;
     }
 }
