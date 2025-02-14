@@ -54,7 +54,30 @@ public class PersonDaoJDBC implements PersonDao {
 
     @Override
     public void update(Person person) {
+        PreparedStatement preparedStatement = null;
 
+        try {
+            preparedStatement = connection.prepareStatement(
+                                """
+                                    UPDATE person
+                                    SET Name = ?, PhoneNumber = ?, Email = ?
+                                    WHERE id = ?
+                                    """);
+            preparedStatement.setString(1, person.getName());
+            preparedStatement.setString(2, person.getPhoneNumber());
+            preparedStatement.setString(3, person.getEmail());
+            preparedStatement.setInt(4, person.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new DbException("Unexpected error! No rows affected");
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     @Override
@@ -76,11 +99,11 @@ public class PersonDaoJDBC implements PersonDao {
 
             resultSet = preparedStatement.executeQuery();
 
-            Person person = new Person();
-            if (resultSet.next()) {
-                person = instantiatePerson(resultSet);
+            if (!resultSet.next()) {
+                throw new DbException("Can't find a contact by id: " + id);
             }
-            return person;
+
+            return instantiatePerson(resultSet);
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
@@ -107,6 +130,9 @@ public class PersonDaoJDBC implements PersonDao {
 
             resultSet = preparedStatement.executeQuery();
 
+            if (!resultSet.next()) {
+                throw new DbException("There's no contact in data base");
+            }
             return instantiateContacts(resultSet);
         } catch (SQLException e) {
             throw new DbException(e.getMessage());

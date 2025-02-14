@@ -28,5 +28,10 @@ public class Program {
         int id = sc.nextInt();
         Person personFound = personDao.findById(id);
         System.out.println(personFound);
+
+        System.out.println("\n=== Test 3: Person update ===");
+        personFound.setName("Marcos da Silva");
+        personDao.update(personFound);
+        System.out.println("Update completed!");
     }
 }
