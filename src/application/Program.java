@@ -14,6 +14,7 @@ public class Program {
         Scanner sc = new Scanner(System.in);
         PersonDao personDao = DaoFactory.createPersonDao();
 
+
         System.out.println("=== Test 1: Person insert ===");
         Person person = new Person(null, "Maria da Silva", "48999999999", "mariadasilva@gmail.com");
         personDao.insert(person);
@@ -33,5 +34,12 @@ public class Program {
         personFound.setName("Marcos da Silva");
         personDao.update(personFound);
         System.out.println("Update completed!");
+
+        System.out.println("\n=== Test 4: Person findByName ===");
+        System.out.print("Enter name to find a contact: ");
+        sc.nextLine();
+        String name = sc.nextLine();
+        personFound = personDao.findByName(name);
+        System.out.println(personFound);
     }
 }

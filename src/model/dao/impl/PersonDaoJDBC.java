@@ -114,7 +114,31 @@ public class PersonDaoJDBC implements PersonDao {
 
     @Override
     public Person findByName(String name) {
-        return null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                                """
+                                    SELECT * FROM person
+                                    WHERE name = ?
+                                    """);
+
+            preparedStatement.setString(1, name);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                throw new DbException("Can't find a person by name: " + name);
+            }
+
+            return instantiatePerson(resultSet);
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
     }
 
     @Override
