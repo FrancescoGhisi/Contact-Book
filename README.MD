@@ -1,7 +1,7 @@
 ## Contact Book Project
 A project back-end for practicing the following concepts: 
 
-- Oriented Object Programming (OOP) in Java;
+- Object Oriented Programming (OOP) in Java;
 - CRUD (Create, Read, Update and Delete) in a DataBase.
 
 ## Features
